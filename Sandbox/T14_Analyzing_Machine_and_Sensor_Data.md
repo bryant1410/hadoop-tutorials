@@ -99,65 +99,113 @@ To refine and analyze HVAC sensor data, we will:
 
 ### Step 2: Load the Sensor Data into the Hortonworks Sandbox
 
--   Open the Sandbox HUE and click the HCatalog icon in the toolbar at
-    the top of the page, then click **Create a new table from a file**.
+-   Navigate to the ambari login by going to the web address [`http://localhost:8080`](http://localhost:8080) 
+-   Login with the username `admin` and password `admin`.
 
-    ![](./images/tutorial-14/01_create_table.jpg?raw=true)
+Once logged in to the sandbox, navigate to the icon at the top right of the header and view the dropdown menu. 
 
--   On the "Create a new table from a file" page, type "HVAC" in the
-    Table Name box, then click **Choose a file** under the Input File
-    box.
+-	Select `HDFS Files`
 
-    ![](./images/tutorial-14/02_open_choose_file.jpg?raw=true)
+   ![](./images/tutorial-14/01_hdfs_files_view.png?raw=true)
 
--   On the "Choose a file" pop-up, click **Upload a file**.
+-   Note the view you are greeted with once you open the `HDFS Files` Ambari View.
+-	You can view the path that you're currently in
+-	You can create new directories and upload files using the button on the top.
+-	You can also download whole directories as `.zip` files, move directories, and delete them as well. These options are highlighted in blue for each folder or file in a directory.
 
-    ![](./images/tutorial-14/03_choose_file_popup.jpg?raw=true)
+    ![](./images/tutorial-14/02_hdfs_files_ex_1.png?raw=true)
 
--   Use the File Upload dialog to browse to the SensorFiles folder you
-    extracted previously. Select the HVAC.csv file, then click **Open**.
 
-    ![](./images/tutorial-14/04_file_upload_window.jpg?raw=true)
+-   Navigate to the `/tmp` directory.
+-	Create the directory `data` by using **New Directory** at the top of the page.
+-	Once inside the directory, click **Upload** then **Browse**. Navigate to the `HVAC.csv` file that is part of the .zip file that was downloaded earlier.
+-	Click **Upload** to upload the CSV file to HDFS.
+-	Follow the same procedure to upload the `building.csv` file.
 
--   On the "Choose a file" pop-up, click the HVAC.csv file.
+    ![](./images/tutorial-14/03_hdfs_files_upload.png?raw=true)
 
-    ![](./images/tutorial-14/05_choose_file_HVAC.jpg?raw=true)
+-   After uploading both files, the page should look similar to the following image:
 
--   The default settings on the "Create a new table from a file" page
-    are correct for this file, scroll down to the bottom of the page and
-    click **Create table**.
+    ![](./images/tutorial-14/04_hdfs_files_completed.png?raw=true)
 
-    ![](./images/tutorial-14/06_create_table.jpg?raw=true)
+-	Now user the menu on the header again to access the dropdown menu containing the link to the [`Ambari Hive View`](http://localhost:8080/#/main/views/HIVE/1.0.0/Hive)
 
--   A progress indicator appears while the table is being created.
+    ![](./images/tutorial-14/05_hive_view_dropdown.png?raw=true)
 
-    ![](./images/tutorial-14/07_creating_table_progress.jpg?raw=true)
+-   Here we're going to define two tables that will contain data from our `HVAC.csv` and `building.csv` files.
+-	Copy and paste the following query into the worksheet and click **Execute** to create the table **hvac_stage**.
 
--   When the table has been created, it appears in the HCatalog Table
-    List.
+```
+create table hvac_stage (
+recordDate string,
+Time string,
+TargetTemp int,
+ActualTemp int,
+System int,
+SystemAge int,
+BuildingID int) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+```
 
-    ![](./images/tutorial-14/08_HCat_hvac_table.jpg?raw=true)
+   ![](./images/tutorial-14/06_hive_query_stage_1.png?raw=true)
 
--   Repeat the previous steps to create a "building" table by uploading
-    the building.csv file.
+-   After the previous query has executed, **Execute** this next next query to create the table **buildings_stage**.
 
-    ![](./images/tutorial-14/09_HCat_hvac_and_building.jpg?raw=true)
+```
+create table buildings_stage
+(BuildingID int,
+ BuildingMgr string,
+ BuildingAge string,
+ HVACproduct string,
+ Country string) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+```
 
--   Now let's take a look at the two data tables. On the HCatalog Table
-    List page, select the check box next to the "hvac" table, then click
-    **Browse Data**. We can see that the "hvac" table includes columns
-    for date, time, the target temperature, the actual temperature, the
-    system identifier, the system age, and the building ID.
+   ![](./images/tutorial-14/07_hive_query_stage_2.png?raw=true)
 
-    ![](./images/tutorial-14/10_hvac_table.jpg?raw=true)
+-   After both queries have succeeded you should see `hvac_stage` and `buildings_stage` in the **Database Explorer** on the left hand side of the screen.
+-	Now use the following query to load our tables with data from our data files that we previously uploaded to HDFS.
 
--   Navigate back to the HCatalog Table List page. Select the check box
-    next to the "building" table, then click **Browse Data**. We can see
-    that the "building" table includes columns for the building
-    identifier, the building manager, the building age, the HVAC product
-    in the building, and the country in which the building is located.
+```
+LOAD DATA INPATH '/tmp/data/HVAC.csv' OVERWRITE INTO TABLE HVAC_stage;
+```
 
-    ![](./images/tutorial-14/11_building_table.jpg?raw=true)
+   ![](./images/tutorial-14/08_hive_query_load_1.png?raw=true)
+
+-   Repeat the previous step with the following query to load the table `buildings_stage` with data.
+
+```
+LOAD DATA INPATH '/tmp/data/building.csv' OVERWRITE INTO TABLE buildings_stage;
+```
+
+   ![](./images/tutorial-14/09_hive_query_load_2.png?raw=true)
+
+-   Now refresh the **Database Explorer**. You should see all of the tables appear on the left hand side after clicking `default`.
+-	If you click the small square icon to the right hand side of any table it will immediately create a query that gives you a small sample of data from the table you selected.
+- Do this for the table `hvac_stage` and `buildings_stage`. Make sure both tables have all columns populated and that it is possible to execute and see the results of both queries.
+
+    ![](./images/tutorial-14/10_hive_example_data.png?raw=true)
+
+-	Now that we have both tables loaded in, we want to get better performance in Hive, so we're going to create new tables that utilize the highly efficient [**ORC** file format](http://hortonworks.com/blog/apache-orc-launches-as-a-top-level-project/). This will allow for faster queries when our datasets are much much larger.
+-	Execute the following query to create a new table `hvac` that is stored as an ORC file.
+
+```
+CREATE TABLE hvac STORED AS ORC AS SELECT * FROM HVAC_stage;
+```
+
+   ![](./images/tutorial-14/11_hive_orc_1.png?raw=true)
+
+-	Repeat the previous step, except this time we will make a table for `buildings`.
+
+```
+CREATE TABLE buildings STORED AS ORC AS SELECT * FROM buildings_stage;
+```
+   
+   ![](./images/tutorial-14/12_hive_orc_2.png?raw=true)
 
 ### Step 3: Run Two Hive Scripts to Refine the Sensor Data
 
@@ -173,14 +221,15 @@ accomplish three goals with this data:
 -   First, we will identify whether the actual temperature was more than
     five degrees different from the target temperature.
 
-    In the Sandbox HUE, click the Beeswax (Hive UI) icon in the toolbar
-    at the top of the page to display the Query Editor.
+-	Create a new worksheet in the Hive view and paste the following Hive query into your window.
+
+-	This query creates a new table `hvac_temperatures` and copies data from the `hvac` table
 
 -   To view the data generated by the script, click **Tables** in the
     menu at the top of the page, select the checkbox next to
     `hvac_temperatures`, and then click **Browse Data**.
 
-    ![](./images/tutorial-14/13_browse_data_hvac_temperatures.jpg?raw=true)
+    ![](./images/tutorial-14/13_hive_hvac_temperatures.png?raw=true)
 
 -   On the Query Results page, us the slider to scroll to the right. You
     will notice that two new attributes appear in the
@@ -198,7 +247,7 @@ accomplish three goals with this data:
     If the temperature is outside of the normal range, "extremetemp" is
     assigned a value of 1; otherwise its value is 0.
 
-    ![](./images/tutorial-14/14_hvac_temperatures_table.jpg?raw=true)
+    ![](./images/tutorial-14/14_hive_hvac_temps_example.png?raw=true)
 
 -   Next we will combine the "hvac" and "hvac_temperatures" data sets.
 
@@ -209,12 +258,12 @@ accomplish three goals with this data:
     menu at the top of the page, select the checkbox next to
     `hvac_building`, and then click **Browse Data**.
 
-    ![](./images/tutorial-14/16_browse_data_hvac_building.jpg?raw=true)
+    ![](./images/tutorial-14/15_hive_hvac_building_query.png?raw=true)
 
 -   The `hvac_temperatures` table is displayed on the Query Results
     page.
 
-    ![](./images/tutorial-14/17_hvac_building_table.jpg?raw=true)
+    ![](./images/tutorial-14/16_hive_examine_hvac_building.png?raw=true)
 
 Now that we have refined the HVAC sensor data, we can access the data
 with Microsoft Excel.
