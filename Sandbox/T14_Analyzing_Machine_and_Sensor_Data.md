@@ -242,9 +242,8 @@ AS extremetemp from hvac;
 
     ![](./images/tutorial-14/13_hive_hvac_temperatures.png?raw=true)
 
--   On the Query Results page, us the slider to scroll to the right. You
-    will notice that two new attributes appear in the
-    `hvac_temperatures` table.
+-   On the Query Results page, use the slider to scroll to the right. You
+    will notice that two new attributes appear in the `hvac_temperatures` table.
 
     The data in the **temprange** column indicates whether the actual
     temperature was:
@@ -255,7 +254,7 @@ AS extremetemp from hvac;
     -   **HOT** **–** more than 5 degrees warmer than the target
         temperature.
 
-    If the temperature is outside of the normal range, "extremetemp" is
+    If the temperature is outside of the normal range, `extremetemp` is
     assigned a value of 1; otherwise its value is 0.
 
     ![](./images/tutorial-14/14_hive_hvac_temps_example.png?raw=true)
@@ -274,12 +273,11 @@ from buildings b join hvac_temperatures h on b.buildingid = h.buildingid;
 
     ![](./images/tutorial-14/15_hive_hvac_building_query.png?raw=true)
 
--   After you've successfully executed the query, use the database explorer to The `hvac_temperatures` table is displayed on the Query Results
-    page.
+-   After you've successfully executed the query, use the database explorer to load a sample of the data from the new `hvac_building` table.
 
     ![](./images/tutorial-14/16_hive_examine_hvac_building.png?raw=true)
 
-Now that we've constructued the data into a useful format, we can use many different reporting tools to analyze the results.
+Now that we've constructued the data into a useful format, we can use different reporting tools to analyze the results.
 
 * * * * *
 
@@ -288,7 +286,7 @@ Now that we've constructued the data into a useful format, we can use many diffe
 In this tutorial you can choose to report with
 
 -	[Microsoft Excel](#step-4a-access-the-refined-sensor-data-with-microsoft-excel)
--	[Apache Zeppelin](#step-4b-report-on-refined-sensor-data-with-apache-zeppelin)
+-	[Apache Zeppelin](#step-4b-access-the-refined-sensor-data-with-apache-zeppelin)
 
 * * * * *
 
@@ -460,7 +458,100 @@ improve employee comfort.
 ---------------------------------------------------------------
 
 ## Step 4b: Access the Refined Sensor Data with Apache Zeppelin
---------------------------------------------------------------
+---------------------------------------------------------------
+
+Apache Zeppelin makes data reporting easy on Hadoop. It has direct connections to Apache Spark and Hive in your cluster and allows you to create visualizations and analyze your data on the fly.
+
+To start you're going to need to open up the [Apache Zeppelin view](http://localhost:8080/#/main/views/ZEPPELIN/1.0.0/INSTANCE_1) in Ambari.
+
+Start by navigating back to the [Ambari Dashboard](http://localhost:8080) at `http://localhost:8080`
+
+-	Use the dropdown menu to open the Zeppelin View.
+
+   ![](./images/tutorial-14/41_ambari_zeppelin_view.png?raw=true)
+   
+-	From here we're going to need to create a new Zeppelin Notebook. 
+-	Notebooks in Zeppelin is how we differentiate reports from one another.
+-	Hove over **Notebook**. Use the dropdown menu and **Create a new note**.
+   
+   ![](./images/tutorial-14/42_create_zeppelin_note.png?raw=true)\
+   
+-	Name the note **HVAC Analysis Report** and then **Create Note**.
+   
+   ![](./images/tutorial-14/43_zeppelin_naming_note.png?raw=true)
+   
+   
+-	Head back to the Zeppelin homepage.
+-	Use the **Notebook** dropdown menu to open the new notebook **HVAC Analysis Report**.
+
+   ![](./images/tutorial-14/43_1_opening_note.png?raw=true)
+   
+-	You will be greeted by a view similar to the following.
+-	Zeppelin integrates with Hadoop by using things called *interpreters*.
+-	In this tutorial we'll be working with the Hive interpreter to run Hive queries in Zeppelin, then visualize the results from our Hive queries directly in Zeppelin.
+-	To specify the Hive interpeter for this note, we need to put `%hive` at the top of the note. Everything afterwards will be interpreted as a Hive query.
+   
+   ![](./images/tutorial-14/44_blank_zeppelin_notebook.png?raw=true)
+   
+-	Type the following query into the note, then run it by clicking the **Run** arrow or by using the shortcut **Shift+Enter**.
+
+```
+%hive
+
+select country, extremetemp, temprange from hvac_building
+```
+   
+   ![](./images/tutorial-14/45_zeppelin_query.png?raw=true)
+   
+-	After running the previous query we can view a chart of the data by clicking the chart button located just under the query.
+
+   ![](./images/tutorial-14/46_table_to_chart.png?raw=true)
+   
+-	Click **settings** to open up more advanced settings for creating the chart. Here you can experiment with different values and columns to create different types of charts.
+   
+   ![](./images/tutorial-14/47_changing_chart_settings.png?raw=true)
+   
+-	Arrange the fields according to the following image.
+-	Drag the field `temprange` into the **groups** box.
+-	Click **SUM** on `extremetemp` and change it to **COUNT**.
+-	Make sure that `country` is the only field under **Keys**.
+   
+   ![](./images/tutorial-14/48_chart_setup.png?raw=true)
+   
+-	Awesome! You've just created your first chart using Apache Zeppelin.
+-	From this chart we can see which countries have the most extreme temperature and how many **NORMAL** events there are compared to **HOT** and **COLD**.
+-	From this data it could be possible to figure out which buildings might need HVAC upgrades, and which do not.
+   
+   ![](./images/tutorial-14/49_chart_finished.png?raw=true)
+   
+-	Let's try creating one more note to visualize which types of HVAC systems result in the least amount of `extremetemp` readings.
+-	Paste the following query into the blank Zeppelin note following the chart we made previously.
+
+```
+%hive
+
+select hvacproduct, extremetemp from hvac_building
+```
+
+-	Now use **Shift+Enter** to run the note.
+   
+   ![](./images/tutorial-14/50_second_query.png?raw=true)
+   
+-	Arrange the fields according to the following image so we can recreate the chart below.
+-	Make sure that `hvacproduct` is in the **Keys** box.
+-	Make sure that `extremetemp` is in the **Values** box and that it is set to **COUNT**.
+   
+   ![](./images/tutorial-14/51_chart_two.png?raw=true)
+  
+-	Now we can see which HVAC units result in the most `extremetemp` readings. Thus we can make a more informed decision when purchasing new HVAC systems.
+
+
+Apache Zeppelin gives you the power to connect right to your Hadoop cluster to quickly obtain results from the data inside of Hadoop without having to export data to any other sources.
+
+It's also important to note that Zeppelin contains many, many interpreters that can be utilized to obtain data in a variety of ways.
+
+One of the default interpreters included with Zeppelin is for Apache Spark. With the popularity of Apache Spark rising, you can simply write Spark scripts to execute directly on Apache Zeppelin to obtain results from your data in a matter of seconds.
+
 
 **Feedback**
 
