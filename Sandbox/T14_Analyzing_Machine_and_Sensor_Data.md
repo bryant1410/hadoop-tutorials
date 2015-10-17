@@ -474,7 +474,7 @@ Start by navigating back to the [Ambari Dashboard](http://localhost:8080) at `ht
 -	Notebooks in Zeppelin is how we differentiate reports from one another.
 -	Hove over **Notebook**. Use the dropdown menu and **Create a new note**.
    
-   ![](./images/tutorial-14/42_create_zeppelin_note.png?raw=true)\
+   ![](./images/tutorial-14/42_create_zeppelin_note.png?raw=true)
    
 -	Name the note **HVAC Analysis Report** and then **Create Note**.
    
