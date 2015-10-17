@@ -486,10 +486,9 @@ Start by navigating back to the [Ambari Dashboard](http://localhost:8080) at `ht
 
    ![](./images/tutorial-14/43_1_opening_note.png?raw=true)
    
--	You will be greeted by a view similar to the following.
 -	Zeppelin integrates with Hadoop by using things called *interpreters*.
 -	In this tutorial we'll be working with the Hive interpreter to run Hive queries in Zeppelin, then visualize the results from our Hive queries directly in Zeppelin.
--	To specify the Hive interpeter for this note, we need to put `%hive` at the top of the note. Everything afterwards will be interpreted as a Hive query.
+-	To specify the Hive interpreter for this note, we need to put `%hive` at the top of the note. Everything afterwards will be interpreted as a Hive query.
    
    ![](./images/tutorial-14/44_blank_zeppelin_notebook.png?raw=true)
    
