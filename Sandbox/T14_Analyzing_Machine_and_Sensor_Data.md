@@ -281,7 +281,14 @@ from buildings b join hvac_temperatures h on b.buildingid = h.buildingid;
 
 Now that we've constructued the data into a useful format, we can use many different reporting tools to analyze the results.
 
-In this tutorial you can choose to report with [Microsoft Excel](Step 4: Access the Refined Sensor Data with Microsoft Excel)
+* * * * *
+
+# Data Reporting 
+
+In this tutorial you can choose to report with
+
+-	[Microsoft Excel](#step-4a-access-the-refined-sensor-data-with-microsoft-excel)
+-	[Apache Zeppelin](#step-4b-report-on-refined-sensor-data-with-apache-zeppelin)
 
 * * * * *
 
@@ -452,7 +459,7 @@ improve employee comfort.
 
 ---------------------------------------------------------------
 
-## Step 4b: Report on Refined Sensor Data with Apache Zeppelin
+## Step 4b: Access the Refined Sensor Data with Apache Zeppelin
 --------------------------------------------------------------
 
 **Feedback**
