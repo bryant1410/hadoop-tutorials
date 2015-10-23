@@ -1,6 +1,6 @@
 ##Tutorial 14: Analyzing Machine and Sensor Data
 
-**This tutorial is from the [Hortonworks Sandbox 2.0](http://hortonworks.com/products/sandbox) - a single-node Hadoop cluster running in a virtual machine. [Download](http://hortonworks.com/products/sandbox) the Hortonworks Sandbox to run this and other tutorials in the series.**
+**This tutorial is for HDP version 2.3 of the [Hortonworks Sandbox](http://hortonworks.com/products/sandbox) - a single-node Hadoop cluster running in a virtual machine. [Download](http://hortonworks.com/products/sandbox) the Hortonworks Sandbox to run this and other tutorials in the series.**
 
 ### Introduction
 
@@ -39,29 +39,30 @@ around the world.
 ### Prerequisites:
 
 -   Hortonworks Sandbox (installed and running)
--   Hortonworks ODBC driver installed and configured
+-   Hortonworks ODBC driver installed and configured (if using Microsoft Excel for reporting analysis)
 
 Refer to
 
 -   [Tutorial 7: Installing and Configuring the Hortonworks ODBC driver
-    on Windows 7](T07_Installing_the_Hortonworks_ODBC_Driver_on_Windows_7.md)
+    on Windows 7](http://hortonworks.com/hadoop-tutorial/how-to-install-and-configure-the-hortonworks-odbc-driver-on-windows-7/)
 -   [Tutorial 11: Installing and Configuring the Hortonworks ODBC driver
-    on Mac OS X](T11_Installing_the_Hortonworks_ODBC_driver_on_Mac_OSX.md)
--   Microsoft Excel 2013 Professional Plus
+    on Mac OS X](http://hortonworks.com/hadoop-tutorial/how-to-install-and-configure-the-hortonworks-odbc-driver-on-mac-os-x/)
+-   Microsoft Excel 2013 Professional Plus (optional)
 
 **Notes:**
 
 -   In this tutorial, the Hortonworks Sandbox is installed on an Oracle
     VirtualBox virtual machine (VM) – your screens may be different.
--   Install the ODBC driver that matches the version of Excel you are
+-   If you plan on using the Microsoft Excel for the analysis and reporting section install the ODBC driver that matches the version of Excel you are
     using (32-bit or 64-bit).
--   In this tutorial, we will use the Power View feature in Microsoft
+-   If choosing to use Excelm you will use the Power View feature in Microsoft
     Excel 2013 to visualize the sensor data. Power View is currently
     only available in Microsoft Office Professional Plus and Microsoft
     Office 365 Professional Plus.
 -   Note, other versions of Excel will work, but the visualizations will
     be limited to charts. You can connect to any other visualization
-    tool you like
+    tool you like.
+-	If not using Excel, you will be able to use Apache Zeppelin to analyze and report on the data from this tutorial.
 
 ### Overview
 
@@ -70,8 +71,8 @@ To refine and analyze HVAC sensor data, we will:
 -   Download and extract the sensor data files.
 -   Load the sensor data into the Hortonworks Sandbox.
 -   Run two Hive scripts to refine the sensor data.
--   Access the refined sensor data with Microsoft Excel.
--   Visualize the sensor data using Excel Power View.
+-   Access the refined sensor data with Microsoft Excel or Apache Zeppelin.
+-   Visualize the sensor data using Excel Power View or Apache Zeppelin.
 
 ### Step 1: Download and Extract the Sensor Data Files
 
@@ -99,65 +100,123 @@ To refine and analyze HVAC sensor data, we will:
 
 ### Step 2: Load the Sensor Data into the Hortonworks Sandbox
 
--   Open the Sandbox HUE and click the HCatalog icon in the toolbar at
-    the top of the page, then click **Create a new table from a file**.
+-   Navigate to the ambari login by going to the web address [`http://localhost:8080`](http://localhost:8080) 
+-   Login with the username `admin` and password `admin`.
 
-    ![](./images/tutorial-14/01_create_table.jpg?raw=true)
+Once logged in to the sandbox, navigate to the icon at the top right of the header and view the dropdown menu. 
 
--   On the "Create a new table from a file" page, type "HVAC" in the
-    Table Name box, then click **Choose a file** under the Input File
-    box.
+-	Select `HDFS Files`
 
-    ![](./images/tutorial-14/02_open_choose_file.jpg?raw=true)
+   ![](./images/tutorial-14/01_hdfs_files_view.png?raw=true)
 
--   On the "Choose a file" pop-up, click **Upload a file**.
+-   Note the view you are greeted with once you open the `HDFS Files` Ambari View.
+-	You can view the path that you're currently in
+-	You can create new directories and upload files using the button on the top.
+-	You can also download whole directories as `.zip` files, move directories, and delete them as well. These options are highlighted in blue for each folder or file in a directory.
 
-    ![](./images/tutorial-14/03_choose_file_popup.jpg?raw=true)
+    ![](./images/tutorial-14/02_hdfs_files_ex_1.png?raw=true)
 
--   Use the File Upload dialog to browse to the SensorFiles folder you
-    extracted previously. Select the HVAC.csv file, then click **Open**.
 
-    ![](./images/tutorial-14/04_file_upload_window.jpg?raw=true)
+-   Navigate to the `/tmp` directory.
+-	Create the directory `data` by using **New Directory** at the top of the page.
+-	Once inside the directory, click **Upload** then **Browse**. Navigate to the `HVAC.csv` file that is part of the .zip file that was downloaded earlier.
+-	Click **Upload** to upload the CSV file to HDFS.
+-	Follow the same procedure to upload the `building.csv` file.
 
--   On the "Choose a file" pop-up, click the HVAC.csv file.
+    ![](./images/tutorial-14/03_hdfs_files_upload.png?raw=true)
 
-    ![](./images/tutorial-14/05_choose_file_HVAC.jpg?raw=true)
+-   After uploading both files, the page should look similar to the following image:
 
--   The default settings on the "Create a new table from a file" page
-    are correct for this file, scroll down to the bottom of the page and
-    click **Create table**.
+    ![](./images/tutorial-14/04_hdfs_files_completed.png?raw=true)
 
-    ![](./images/tutorial-14/06_create_table.jpg?raw=true)
+-	Now user the menu on the header again to access the dropdown menu containing the link to the [`Ambari Hive View`](http://localhost:8080/#/main/views/HIVE/1.0.0/Hive)
 
--   A progress indicator appears while the table is being created.
+    ![](./images/tutorial-14/05_hive_view_dropdown.png?raw=true)
 
-    ![](./images/tutorial-14/07_creating_table_progress.jpg?raw=true)
+-   Here we're going to define two tables that will contain data from our `HVAC.csv` and `building.csv` files.
+-	Copy and paste the following query into the worksheet and click **Execute** to create the table **hvac_stage**.
 
--   When the table has been created, it appears in the HCatalog Table
-    List.
+```
+create table hvac_stage (
+recordDate string,
+Time string,
+TargetTemp int,
+ActualTemp int,
+System int,
+SystemAge int,
+BuildingID int) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+```
 
-    ![](./images/tutorial-14/08_HCat_hvac_table.jpg?raw=true)
+   ![](./images/tutorial-14/06_hive_query_stage_1.png?raw=true)
 
--   Repeat the previous steps to create a "building" table by uploading
-    the building.csv file.
+-   After the previous query has executed, **Execute** this next next query to create the table **buildings_stage**.
 
-    ![](./images/tutorial-14/09_HCat_hvac_and_building.jpg?raw=true)
+```
+create table buildings_stage
+(BuildingID int,
+ BuildingMgr string,
+ BuildingAge string,
+ HVACproduct string,
+ Country string) 
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+```
 
--   Now let's take a look at the two data tables. On the HCatalog Table
-    List page, select the check box next to the "hvac" table, then click
-    **Browse Data**. We can see that the "hvac" table includes columns
-    for date, time, the target temperature, the actual temperature, the
-    system identifier, the system age, and the building ID.
+   ![](./images/tutorial-14/07_hive_query_stage_2.png?raw=true)
 
-    ![](./images/tutorial-14/10_hvac_table.jpg?raw=true)
+-   After both queries have succeeded you should see `hvac_stage` and `buildings_stage` in the **Database Explorer** on the left hand side of the screen.
+-	Now use the following query to load our tables with data from our data files that we previously uploaded to HDFS.
 
--   Navigate back to the HCatalog Table List page. Select the check box
-    next to the "building" table, then click **Browse Data**. We can see
-    that the "building" table includes columns for the building
-    identifier, the building manager, the building age, the HVAC product
-    in the building, and the country in which the building is located.
+```
+LOAD DATA INPATH '/tmp/data/HVAC.csv' OVERWRITE INTO TABLE HVAC_stage;
+```
 
-    ![](./images/tutorial-14/11_building_table.jpg?raw=true)
+   ![](./images/tutorial-14/08_hive_query_load_1.png?raw=true)
+
+-   Repeat the previous step with the following query to load the table `buildings_stage` with data.
+
+```
+LOAD DATA INPATH '/tmp/data/building.csv' OVERWRITE INTO TABLE buildings_stage;
+```
+
+   ![](./images/tutorial-14/09_hive_query_load_2.png?raw=true)
+
+-   Now refresh the **Database Explorer**. You should see all of the tables appear on the left hand side after clicking `default`.
+-	If you click the small square icon to the right hand side of any table it will immediately create a query that gives you a small sample of data from the table you selected.
+- Do this for the table `hvac_stage` and `buildings_stage`. Make sure both tables have all columns populated and that it is possible to execute and see the results of both queries.
+
+Lastly, we want to remove the header rows that are present when we query the tables in Hive. To do this we simply need to write to commands. One for each table.
+
+```
+ALTER TABLE buildings_stage SET TBLPROPERTIES ("skip.header.line.count"="1");
+```
+
+```
+ALTER TABLE hvac_stage SET TBLPROPERTIES ("skip.header.line.count"="1");
+```
+
+    ![](./images/tutorial-14/10_hive_example_data.png?raw=true)
+
+-	Now that we have both tables loaded in, we want to get better performance in Hive, so we're going to create new tables that utilize the highly efficient [**ORC** file format](http://hortonworks.com/blog/apache-orc-launches-as-a-top-level-project/). This will allow for faster queries when our datasets are much much larger.
+-	Execute the following query to create a new table `hvac` that is stored as an ORC file.
+
+```
+CREATE TABLE hvac STORED AS ORC AS SELECT * FROM HVAC_stage;
+```
+
+   ![](./images/tutorial-14/11_hive_orc_1.png?raw=true)
+
+-	Repeat the previous step, except this time we will make a table for `buildings`.
+
+```
+CREATE TABLE buildings STORED AS ORC AS SELECT * FROM buildings_stage;
+```
+   
+   ![](./images/tutorial-14/12_hive_orc_2.png?raw=true)
 
 ### Step 3: Run Two Hive Scripts to Refine the Sensor Data
 
@@ -173,20 +232,30 @@ accomplish three goals with this data:
 -   First, we will identify whether the actual temperature was more than
     five degrees different from the target temperature.
 
-    In the Sandbox HUE, click the Beeswax (Hive UI) icon in the toolbar
-    at the top of the page to display the Query Editor.
+-	Create a new worksheet in the Hive view and paste the following Hive query into your window.
 
--   To view the data generated by the script, click **Tables** in the
-    menu at the top of the page, select the checkbox next to
-    `hvac_temperatures`, and then click **Browse Data**.
+```
+CREATE TABLE hvac_temperatures as 
+select *, targettemp - actualtemp as temp_diff, 
+IF((targettemp - actualtemp) > 5, 'COLD', 
+IF((targettemp - actualtemp) < -5, 'HOT', 'NORMAL')) 
+AS temprange, 
+IF((targettemp - actualtemp) > 5, '1', 
+IF((targettemp - actualtemp) < -5, '1', 0)) 
+AS extremetemp from hvac;
+```
 
-    ![](./images/tutorial-14/13_browse_data_hvac_temperatures.jpg?raw=true)
+-	This query creates a new table `hvac_temperatures` and copies data from the `hvac` table
 
--   On the Query Results page, us the slider to scroll to the right. You
-    will notice that two new attributes appear in the
-    `hvac_temperatures` table.
+-   After you paste the query use **Execute** to create the new table.
+-	Then
 
-    The data in the "temprange" column indicates whether the actual
+    ![](./images/tutorial-14/13_hive_hvac_temperatures.png?raw=true)
+
+-   On the Query Results page, use the slider to scroll to the right. You
+    will notice that two new attributes appear in the `hvac_temperatures` table.
+
+    The data in the **temprange** column indicates whether the actual
     temperature was:
 
     -   **NORMAL** **–** within 5 degrees of the target temperature.
@@ -195,33 +264,43 @@ accomplish three goals with this data:
     -   **HOT** **–** more than 5 degrees warmer than the target
         temperature.
 
-    If the temperature is outside of the normal range, "extremetemp" is
+    If the temperature is outside of the normal range, `extremetemp` is
     assigned a value of 1; otherwise its value is 0.
 
-    ![](./images/tutorial-14/14_hvac_temperatures_table.jpg?raw=true)
+    ![](./images/tutorial-14/14_hive_hvac_temps_example.png?raw=true)
 
--   Next we will combine the "hvac" and "hvac_temperatures" data sets.
+-   Next we will combine the **hvac** and **hvac_temperatures** data sets.
+ 
+Create a new worksheet in the hive view and use the following query to create a new table `hvac_building` that contains data from the `hvac_temperatures` table and the `buildings` table.
+ 
+```
+create table if not exists hvac_building 
+as select h.*, b.country, b.hvacproduct, b.buildingage, b.buildingmgr 
+from buildings b join hvac_temperatures h on b.buildingid = h.buildingid;
+```
 
-    In the Sandbox HUE, click the Beeswax (Hive UI) icon in the toolbar
-    at the top of the page to display the Query Editor.
+-	Use **Execute** to run the query that will produce the table with the intended data.
 
--   To view the data generated by the script, click **Tables** in the
-    menu at the top of the page, select the checkbox next to
-    `hvac_building`, and then click **Browse Data**.
+    ![](./images/tutorial-14/15_hive_hvac_building_query.png?raw=true)
 
-    ![](./images/tutorial-14/16_browse_data_hvac_building.jpg?raw=true)
+-   After you've successfully executed the query, use the database explorer to load a sample of the data from the new `hvac_building` table.
 
--   The `hvac_temperatures` table is displayed on the Query Results
-    page.
+    ![](./images/tutorial-14/16_hive_examine_hvac_building.png?raw=true)
 
-    ![](./images/tutorial-14/17_hvac_building_table.jpg?raw=true)
-
-Now that we have refined the HVAC sensor data, we can access the data
-with Microsoft Excel.
+Now that we've constructued the data into a useful format, we can use different reporting tools to analyze the results.
 
 * * * * *
 
-Step 4: Access the Refined Sensor Data with Microsoft Excel
+# Data Reporting 
+
+In this tutorial you can choose to report with
+
+-	[Microsoft Excel](#step-4a-access-the-refined-sensor-data-with-microsoft-excel)
+-	[Apache Zeppelin](#step-4b-access-the-refined-sensor-data-with-apache-zeppelin)
+
+* * * * *
+
+## Step 4a: Access the Refined Sensor Data with Microsoft Excel
 --------------------------------------------------------------
 
 In this section, we will use Microsoft Excel Professional Plus 2013 to
@@ -385,6 +464,103 @@ analyze sensor data. With real-time access to massive amounts of
 temperature and other types of data on HDP, your facilities department
 can initiate data-driven strategies to reduce energy expenditures and
 improve employee comfort.
+
+---------------------------------------------------------------
+
+## Step 4b: Access the Refined Sensor Data with Apache Zeppelin
+---------------------------------------------------------------
+
+Apache Zeppelin makes data reporting easy on Hadoop. It has direct connections to Apache Spark and Hive in your cluster and allows you to create visualizations and analyze your data on the fly.
+
+To start you're going to need to open up the [Apache Zeppelin view](http://localhost:8080/#/main/views/ZEPPELIN/1.0.0/INSTANCE_1) in Ambari.
+
+Start by navigating back to the [Ambari Dashboard](http://localhost:8080) at `http://localhost:8080`
+
+-	Use the dropdown menu to open the Zeppelin View.
+
+   ![](./images/tutorial-14/41_ambari_zeppelin_view.png?raw=true)
+   
+-	From here we're going to need to create a new Zeppelin Notebook. 
+-	Notebooks in Zeppelin is how we differentiate reports from one another.
+-	Hove over **Notebook**. Use the dropdown menu and **Create a new note**.
+   
+   ![](./images/tutorial-14/42_create_zeppelin_note.png?raw=true)
+   
+-	Name the note **HVAC Analysis Report** and then **Create Note**.
+   
+   ![](./images/tutorial-14/43_zeppelin_naming_note.png?raw=true)
+   
+   
+-	Head back to the Zeppelin homepage.
+-	Use the **Notebook** dropdown menu to open the new notebook **HVAC Analysis Report**.
+
+   ![](./images/tutorial-14/43_1_opening_note.png?raw=true)
+   
+-	Zeppelin integrates with Hadoop by using things called *interpreters*.
+-	In this tutorial we'll be working with the Hive interpreter to run Hive queries in Zeppelin, then visualize the results from our Hive queries directly in Zeppelin.
+-	To specify the Hive interpreter for this note, we need to put `%hive` at the top of the note. Everything afterwards will be interpreted as a Hive query.
+   
+   ![](./images/tutorial-14/44_blank_zeppelin_notebook.png?raw=true)
+   
+-	Type the following query into the note, then run it by clicking the **Run** arrow or by using the shortcut **Shift+Enter**.
+
+```
+%hive
+
+select country, extremetemp, temprange from hvac_building
+```
+   
+   ![](./images/tutorial-14/45_zeppelin_query.png?raw=true)
+   
+-	After running the previous query we can view a chart of the data by clicking the chart button located just under the query.
+
+   ![](./images/tutorial-14/46_table_to_chart.png?raw=true)
+   
+-	Click **settings** to open up more advanced settings for creating the chart. Here you can experiment with different values and columns to create different types of charts.
+   
+   ![](./images/tutorial-14/47_changing_chart_settings.png?raw=true)
+   
+-	Arrange the fields according to the following image.
+-	Drag the field `temprange` into the **groups** box.
+-	Click **SUM** on `extremetemp` and change it to **COUNT**.
+-	Make sure that `country` is the only field under **Keys**.
+   
+   ![](./images/tutorial-14/48_chart_setup.png?raw=true)
+   
+-	Awesome! You've just created your first chart using Apache Zeppelin.
+-	From this chart we can see which countries have the most extreme temperature and how many **NORMAL** events there are compared to **HOT** and **COLD**.
+-	From this data it could be possible to figure out which buildings might need HVAC upgrades, and which do not.
+   
+   ![](./images/tutorial-14/49_chart_finished.png?raw=true)
+   
+-	Let's try creating one more note to visualize which types of HVAC systems result in the least amount of `extremetemp` readings.
+-	Paste the following query into the blank Zeppelin note following the chart we made previously.
+
+```
+%hive
+
+select hvacproduct, extremetemp from hvac_building
+```
+
+-	Now use **Shift+Enter** to run the note.
+   
+   ![](./images/tutorial-14/50_second_query.png?raw=true)
+   
+-	Arrange the fields according to the following image so we can recreate the chart below.
+-	Make sure that `hvacproduct` is in the **Keys** box.
+-	Make sure that `extremetemp` is in the **Values** box and that it is set to **COUNT**.
+   
+   ![](./images/tutorial-14/51_chart_two.png?raw=true)
+  
+-	Now we can see which HVAC units result in the most `extremetemp` readings. Thus we can make a more informed decision when purchasing new HVAC systems.
+
+
+Apache Zeppelin gives you the power to connect right to your Hadoop cluster to quickly obtain results from the data inside of Hadoop without having to export data to any other sources.
+
+It's also important to note that Zeppelin contains many, many interpreters that can be utilized to obtain data in a variety of ways.
+
+One of the default interpreters included with Zeppelin is for Apache Spark. With the popularity of Apache Spark rising, you can simply write Spark scripts to execute directly on Apache Zeppelin to obtain results from your data in a matter of seconds.
+
 
 **Feedback**
 
