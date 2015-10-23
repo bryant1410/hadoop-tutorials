@@ -189,6 +189,16 @@ LOAD DATA INPATH '/tmp/data/building.csv' OVERWRITE INTO TABLE buildings_stage;
 -	If you click the small square icon to the right hand side of any table it will immediately create a query that gives you a small sample of data from the table you selected.
 - Do this for the table `hvac_stage` and `buildings_stage`. Make sure both tables have all columns populated and that it is possible to execute and see the results of both queries.
 
+Lastly, we want to remove the header rows that are present when we query the tables in Hive. To do this we simply need to write to commands. One for each table.
+
+```
+ALTER TABLE buildings_stage SET TBLPROPERTIES ("skip.header.line.count"="1");
+```
+
+```
+ALTER TABLE hvac_stage SET TBLPROPERTIES ("skip.header.line.count"="1");
+```
+
     ![](./images/tutorial-14/10_hive_example_data.png?raw=true)
 
 -	Now that we have both tables loaded in, we want to get better performance in Hive, so we're going to create new tables that utilize the highly efficient [**ORC** file format](http://hortonworks.com/blog/apache-orc-launches-as-a-top-level-project/). This will allow for faster queries when our datasets are much much larger.
