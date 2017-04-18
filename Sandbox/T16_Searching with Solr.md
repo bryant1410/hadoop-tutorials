@@ -1,9 +1,9 @@
-###Overview
+### Overview
 In  this tutorial we will walk through how to use Apache Solr with Hadoop to index and search data stored on HDFS. It’s not meant as a general introduction to Solr.
   
 After working through this tutorial you will have Solr running on your Hortonworks Sandbox. You will also have a solrconfig and a schema which you can easily adapt to your own use cases. Also you will learn how to use Hadoop MapReduce to index files.    
   
-###Prerequisites
+### Prerequisites
   
   
 1. [Hortonworks HDP Sandbox 2.1](http://hortonworks.com/products/hortonworks-sandbox/)  
@@ -15,7 +15,7 @@ After working through this tutorial you will have Solr running on your Hortonwor
   
 Remarks: I was using VMware’s Fusion to run Sandbox. If you choose Virtualbox things should look the same beside the fact your VM will not have it’s own IP address but rather Solr listening on 127.0.0.1. For convenience I added sandbox as a host to my /etc/hosts file on my Mac. Apache Solr 4.7.2 is the officially by Hortonworks supported version as I’m writing this (May 2014).   
   
-###Steps
+### Steps
 
 Let’s get it started: Power-up the sandbox with at least 4GB main memory.
     

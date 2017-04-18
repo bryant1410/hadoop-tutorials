@@ -23,18 +23,18 @@ To follow the steps in this tutorial, your computer must have the following item
 2. **JFreeChart Library:** JFreeChart is the open source charting library which we will use for creating graphical charts. Download Location: <http://sourceforge.net/projects/jfreechart/files/latest/download?source=files> \[**Note**: Extract the downloaded JFreeChart archive file and ensure that it contains a "lib" directory\]
 
 ### Steps Involved
-####Eclipse Project Setup
+#### Eclipse Project Setup
 1. Create an Eclipse Java Project with name "HBaseJavaIntegration".
 2. Go to Project Properties window and in "Java Build Path" section, click on "Add External Jars"
 3. In the JAR Selection dialog, select all jars in the "lib" directory of HBase and press OK.  This will add all HBase library jars to the eclipse project.
 4. Similarly, add all the jars from the "lib" directory of JFreeChart as well.
 
-####Hosts file setup
+#### Hosts file setup
 Add an entry of domain sandbox.hortonworks.com pointing to the IP Address 127.0.0.1 in your hosts file.
 
 In Linux environments, the path of the hosts file is /etc/hosts.  In Windows, the path of the hosts file is %systemroot%\system32\drivers\etc\.
 
-####HBase Table Creation
+#### HBase Table Creation
 1. Launch Hortonworks Sandbox in browser.
 2. Navigate to Hue Shell -> HBase Shell.
 3. Execute the following command.
@@ -44,7 +44,7 @@ create 'professionals','medical-related','writer-related'
 ```
 The above command creates a table with name 'professionals' with two column families namely, 'medical-related' and 'writer-related'.
 
-####What does this example do?
+#### What does this example do?
 In this example, we are trying to do the following things **using a Java Program**.
 
 1. Add 4 doctors of variying specializations into table 'professionals'.  They will have entries in column family "medical-related".
@@ -53,7 +53,7 @@ In this example, we are trying to do the following things **using a Java Program
 4. Scan the table's "medical-related" column family and try to plot a pie chart based on specialization.  Store the pie chart as JPG file.
 5. Scan the table's "writers" column family and try to print all the writers into a text file.  Verify that "Joe",the doctor-writer shows up in the list.
 
-####Coding the Java Class
+#### Coding the Java Class
 Create a Java class with name "HBaseProfessionAnalyser" and following code in it.
 
 ```java
@@ -345,7 +345,7 @@ class Writer {
 
 Remember to change the output file path variables to suit your needs.
 
-####Run and Generate Chart
+#### Run and Generate Chart
 1. Start the Hortonworks Sandbox VM.
 2. After service has started, go to Eclipse, right click on "HBaseProfessionAnalyser" java class and select "Run -> As Java Application".
 3. Check if the writers list text file has been generated.  Verify if "Joe" is also printed there. ![Writers list text file](images/tutorial-08/writers_list_text_file.png "Writers list text file")
@@ -353,6 +353,6 @@ Remember to change the output file path variables to suit your needs.
 
 ![Doctor Specialities Pie Chart](images/tutorial-08/doctor_specialities_pie_chart.jpg "Doctor Specialities Pie Chart")
 
-####Next Steps
+#### Next Steps
 Tweak the code and play around :)
 

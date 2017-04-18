@@ -22,13 +22,13 @@ To follow the steps in this tutorial, your computer must have the following item
 2. **JFreeChart Library:** JFreeChart is the open source charting library which we will use for creating graphical charts. Download Location: <http://sourceforge.net/projects/jfreechart/files/latest/download?source=files> \[**Note**: Extract the downloaded JFreeChart archive file and ensure that it contains a "lib" directory\]
 
 ### Steps Involved
-####Eclipse Project Setup
+#### Eclipse Project Setup
 1. Create an Eclipse Java Project with name "HiveJavaIntegration".
 2. Go to Project Properties window and in "Java Build Path" section, click on "Add External Jars"
 3. In the JAR Selection dialog, select all jars in the "lib" directory of Hive and press OK.  This will add all Hive library jars to the eclipse project.
 4. Similarly, add all the jars from the "lib" directory of JFreeChart as well.
 
-####Hortonworks Sandbox - Port Forwarding Setup
+#### Hortonworks Sandbox - Port Forwarding Setup
 By default, the port mapping for the Hive2 service of Hortonworks sandbox is missing in the Virtualbox entries.  Lets go and create that one.
 
 Right click the Virtual Machine in the Virtualbox and select "Settings".
@@ -45,7 +45,7 @@ Add a new entry in the "Port Forwarding Rules" for hive (hive-tcp-2200-10000) as
 
 Now, Hive2 Service can be reached from a java program running in Eclipse.
 
-####Coding the Java Class
+#### Coding the Java Class
 Create a Java class with name "HiveDataFetcher" and following code in it.
 
 ```java
@@ -175,13 +175,13 @@ public class SalaryDifferenceChartPlotter {
 
 Remember to change the "outputFilePath" variable to suit your needs.
 
-####Run and Generate Chart
+#### Run and Generate Chart
 1. Start the Hortonworks Sandbox VM.
 2. After service has started, go to Eclipse, right click on "SalaryDifferenceChartPlotter" java class and select "Run -> As Java Application".
 3. Check if chart has been generated in the output path specified in code.
 
 ![Salary Difference Chart](images/tutorial-06/salary_difference_chart.jpg "Salary Difference Chart")
 
-####Next Steps
+#### Next Steps
 Tweak the code and play around :)
 

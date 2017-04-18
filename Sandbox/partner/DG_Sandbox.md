@@ -1,4 +1,4 @@
-###Introduction
+### Introduction
 
 Using DgSecure to discover and secure sensitive data is fairly straightforward and we
 will describe the process through a set of use cases in this document, which will include:
@@ -14,12 +14,12 @@ will describe the process through a set of use cases in this document, which wil
 3. Virtualization enabled on BIOS
 4. Browser: Chrome 25+, IE 9+ recommended. (Dataguise supports IE 10, however it is not supported in the Hortonworks Sandbox environment)
 
-###Step 1: Install a virtualization environment (3 Options)
+### Step 1: Install a virtualization environment (3 Options)
 
 1. Go to the following site to download one of the VM environements; http://hortonworks.com/products/hortonworks-sandbox/#install
 
 
-###Step 2: Download the Dataguise / Hortonworks Sandbox & License Key
+### Step 2: Download the Dataguise / Hortonworks Sandbox & License Key
 
  
 
@@ -36,7 +36,7 @@ browser can access.
 - (To access Hue, go to <http://sandbox.hortonworks.com:8000>)
 
 
-###Step 3: Apply DgSecure License & Sign In
+### Step 3: Apply DgSecure License & Sign In
 
 
 
@@ -68,7 +68,7 @@ sandbox.hortonworks.com)
 
 7. Click the browse button on the right in the install license section, and
 point to your downloaded license key and click OK, then click the install button.
-####*DgSecure is now ready to use for 30 days*
+#### *DgSecure is now ready to use for 30 days*
 
 ![2](http://dataguise.com/dgc/Sandbox/SandboxImages/Pic2.png)
 
@@ -76,7 +76,7 @@ point to your downloaded license key and click OK, then click the install button
 
 
 
-###Use Case 1: Define Custom Policy
+### Use Case 1: Define Custom Policy
 
 
 In this section we will be creating a custom policy that will be used
@@ -120,7 +120,7 @@ Policy is now created and ready to use.
 We are now ready to utilize the policy, and we will be running different
 tasks to explore the many features we have in our Hadoop product.
 
-###Use Case 2: Run Discovery Jobs 
+### Use Case 2: Run Discovery Jobs 
 
 First we will start with a discovery task against unstructured data,
 followed by a discovery task against structured data.
@@ -355,7 +355,7 @@ Detailed Results For Discovery Task Avro Files:
 
  
 
-###Use Case 3: Run Masking Jobs
+### Use Case 3: Run Masking Jobs
 
 
 **UNSTRUCTURED MASKING**
@@ -621,7 +621,7 @@ Detailed Results:
 
 ![37](http://dataguise.com/dgc/Sandbox/SandboxImages/Pic37.png)
 
-###Use Case 4: Run Encryption Jobs
+### Use Case 4: Run Encryption Jobs
 
 
 **Domain Definition**
@@ -832,7 +832,7 @@ Detailed Results:
 
 
 
-###Use Case 5: Run Bulk Decryption Jobs
+### Use Case 5: Run Bulk Decryption Jobs
 
  
 

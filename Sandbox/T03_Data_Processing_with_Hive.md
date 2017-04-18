@@ -1,4 +1,4 @@
-##Tutorial 3: Data Processing With Hive - Processing Baseball Stats With Hive
+## Tutorial 3: Data Processing With Hive - Processing Baseball Stats With Hive
 
 **This tutorial is from the [Hortonworks Sandbox 2.0](http://hortonworks.com/products/sandbox) - a single-node Hadoop cluster running in a virtual machine. [Download](http://hortonworks.com/products/sandbox) the Hortonworks Sandbox to run this and other tutorials in the series.**
 

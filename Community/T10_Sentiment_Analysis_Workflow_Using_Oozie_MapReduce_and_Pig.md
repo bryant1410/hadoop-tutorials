@@ -27,7 +27,7 @@ To follow the steps in this tutorial, your computer must have the following item
 ### Explanation of the Use Case
 A fictional use case is presented here, in order to enable you to easily understand the functionality and power of Oozie, without finding it overwhelming or boring. 
 
-####Sentiment Analysis using Twitter tweets
+#### Sentiment Analysis using Twitter tweets
 Given the tweets tweeted in a particular period, you are supposed to find the most popular actor among five candidates.  The names of the candidates are as follows:  
 1. Jaja  
 2. Jiji  
@@ -36,7 +36,7 @@ Given the tweets tweeted in a particular period, you are supposed to find the mo
 5. Jinjin  
 
 ### Instructions
-####Eclipse Project Setup
+#### Eclipse Project Setup
 1. Create an Eclipse Java Project with name `SentimentAnalysis`.
 2. Go to Project Properties window and in "Java Build Path" section, click on "Add External Jars"
 3. In the JAR Selection dialog, select the following jars from the extracted Hadoop tar.gz file.
@@ -47,7 +47,7 @@ Given the tweets tweeted in a particular period, you are supposed to find the mo
 
 ![Eclipse Build Path Settings](images/tutorial-09/eclipse_build_path_settings.png "Eclipse Build Path Settings")
 
-####Code the Mapper Class
+#### Code the Mapper Class
 In the eclipse project created above, create a new Java Class file with name `SentimentAnalysisMapper` and write the following code in it.  This will be the Mapper Class.
 
 ```java
@@ -88,7 +88,7 @@ public class SentimentAnalysisMapper extends MapReduceBase implements
 
 }
 ```
-####Code the Reducer Class
+#### Code the Reducer Class
 In the eclipse project created above, create a new Java Class file with name `SentimentAnalysisReducer` and write the following code in it.  This will be the Reducer Class.
 
 ```java
@@ -120,7 +120,7 @@ public class SentimentAnalysisReducer extends MapReduceBase implements
 
 }
 ```
-####Setting Java Version - Compiler Options
+#### Setting Java Version - Compiler Options
 Hortonworks Sandbox VM contains Java version 6.  So, we need to compile our classes using Java Version 6 in order to avoid Version Mismatch runtime exception.  To ensure compilation using Java Version 6, follow the below instructions.
 
 1. Right-click on the Java Project `SentimentAnalysis` and click on `Properties` menu option.
@@ -130,7 +130,7 @@ Hortonworks Sandbox VM contains Java version 6.  So, we need to compile our clas
 
 ![Eclipse Java Version Settings](images/tutorial-09/eclipse_java_version_settings.png "Eclipse Java Version Settings")
 
-####Creating a Java Archive (JAR) File
+#### Creating a Java Archive (JAR) File
 
 Now, let us export the Java Project to a JAR file.
 
@@ -140,7 +140,7 @@ Now, let us export the Java Project to a JAR file.
 4. Check if SentimentAnalysis.jar exists in ~/Desktop directory.'
 5. Upload SentimentAnalysis.jar to `/user/hue/` directory using [File Browser](http://localhost:8000/filebrowser/).
 
-####Creating a Pig script for Sorting
+#### Creating a Pig script for Sorting
 
 Now, let us create a Pig Script to sort candidates based on number of tweets.
 
@@ -152,7 +152,7 @@ maxTweets = ORDER tweetCounts BY tweetCount DESC;
 STORE maxTweets INTO '/user/hue/SentimentAnalysisFinalOutput/';
 ```
 
-####Creating Oozie Workflow
+#### Creating Oozie Workflow
 Now, let us create the Oozie workflow to execute our MapReduce job and then our Pig job.  
 
 1. Go to [Oozie Editor](http://127.0.0.1:8000/oozie) --> Workflows.
@@ -182,12 +182,12 @@ Archives :- No archives
  
  Similarly, edit the Pig block and specify `/user/hue/Sorting.pig` as "Script Name".
 
-####Monitor Oozie Job Execution
+#### Monitor Oozie Job Execution
 1. Place some sample tweets in any file within the `/user/hue/SentimentAnalysisInput` directory.
 2. Now, go back to [Oozie Editor](http://127.0.0.1:8000/oozie) -> Workflows and then to our Oozie workflow.
 3. Click on "Submit" link on the left side.
 4. You can monitor the Oozie job's progress in the same page, after submitting.
 ![Monitor Execution](images/tutorial-10/monitor_execution.png "Monitor Execution")
 
-####View Sentiment Analysis Results
+#### View Sentiment Analysis Results
 The final, consolidated tweet count for each candidate can be found in a file present in the directory `/user/hue/SentimentAnalysisFinalOutput`.  View this file using [File Browser](http://localhost:8000/filebrowser/) to know the number of tweets mentioning each candidate.

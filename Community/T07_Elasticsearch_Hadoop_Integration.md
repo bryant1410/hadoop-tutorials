@@ -20,12 +20,12 @@ To follow the steps in this tutorial, your computer must have the following item
 Just download [apache.zip](http://download.elasticsearch.org/hadoop/short-video-1/apache.zip) from Costin Leau [video tutorial](http://www.elasticsearch.org/videos/search-and-analytics-with-hadoop-and-elasticsearch/).
 
 ### Setup
-####Elasticsearch setup
+#### Elasticsearch setup
 
 Launch elasticsearch. We won't enter into details on how Elasticsearch works here as it is not our point. For more information, please refer to [elasticsearch website](http://www.elasticsearch.org/guide/).
 
 
-####Hortonworks Sandbox
+#### Hortonworks Sandbox
 Download and launch the sandbox. It should show a screen like this one : 
 ![Sandbox start screen](images/tutorial-07/sandbox.png)
 

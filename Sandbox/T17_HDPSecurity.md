@@ -1,8 +1,8 @@
-###Introduction
+### Introduction
 
 In this tutorial we will explore how you can use policies in HDP Security to protect your enterprise data lake and audit access by users to resources on HDFS, Hive and HBase from a centralized HDP Security Administration Console.
 
-###Prerequisite
+### Prerequisite
 
   - VirtualBox
   - Download [Hortonworks Sandbox + HDP Security](http://hortonassets.s3.amazonaws.com/2.1/hdpsecurity/XASecure3.5.000-on-HDP-2.1Sandbox.ova)
@@ -10,7 +10,7 @@ In this tutorial we will explore how you can use policies in HDP Security to pro
 After you download the VM, import the .ova file to VirtualBox and run the VM.
 
 
-###Login to HDP Security Administration Console 
+### Login to HDP Security Administration Console 
 
 Once the VM is running in VirtualBox, login to the HDP Security Administration console at [http://localhost:6080/](http://localhost:6080/) from your host machine. The username is `admin` and the password is `admin`
 
@@ -20,7 +20,7 @@ Once the VM is running in VirtualBox, login to the HDP Security Administration c
 As soon as you login, you should see list of repositories as shown below:
 ![](http://hortonassets.s3.amazonaws.com/tutorial/security/RepositoryList.png)
 
-###Review existing HDFS policies
+### Review existing HDFS policies
 
 Please click on `hadoopdev` link under HDFS section
 
@@ -29,7 +29,7 @@ Please click on `hadoopdev` link under HDFS section
 User can review policy details by a single click on the policy. The policy details will appear on the right.
 
 
-###Exercise HDFS access scenarios
+### Exercise HDFS access scenarios
 
 To validate the policy, please login into the sandbox using username `it1`. User `it1` belongs to the `IT` group.
 
@@ -73,7 +73,7 @@ Go to Policy Administrator tool, select the Audit tab from the top menu and then
 
 ![](http://hortonassets.s3.amazonaws.com/tutorial/security/HDFSAccessAuditGrantedUseCase.png)
 
-###Review Hive Policies
+### Review Hive Policies
 
 Click on PolicyManager section on the top menu, then click on `hivedev` link under HIVE section to view list of Hive Policies
 
@@ -81,7 +81,7 @@ Click on PolicyManager section on the top menu, then click on `hivedev` link und
 
 User can review policy details by a single click on the policy. The policy details will appear on the right.
 
-###Exercise Hive access scenarios
+### Exercise Hive access scenarios
 
 Run the `beeline` command to validate access for `mktg1` user to see if he can run 
 
@@ -133,14 +133,14 @@ Go to Policy Administrator tool and see its access (granted) being audited.
 ![](http://hortonassets.s3.amazonaws.com/tutorial/security/HIVEAccessAuditGrantedUseCase.png)
 
 
-###Review HBase Policies
+### Review HBase Policies
 Click on PolicyManager section on the top menu, then click on hbasedev link under HBASE section to view list of hbase Policies
 
 ![](http://hortonassets.s3.amazonaws.com/tutorial/security/HBasePolicyList.png)
 
 User can review policy details by a single click on the policy. The policy details will appear on the right.
 
-###Exercise HBase access scenarios
+### Exercise HBase access scenarios
 
 Ensure that the hbase service is running.
 ```bash
@@ -212,7 +212,7 @@ Go to Policy Administrator tool and see its access (granted) being audited.
 
 ![](http://hortonassets.s3.amazonaws.com/tutorial/security/HBaseAccessAuditGrantedV1.png)
 
-###Summary
+### Summary
 
 Hopefully by following this tutorial, you got a taste of the power and ease of securing your key enterprise resources using HDP Security.
 

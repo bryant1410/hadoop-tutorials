@@ -1,4 +1,4 @@
-###Overview
+### Overview
 
 Hive is designed to enable easy data summarization and ad-hoc analysis of large volumes of data. It uses a query language called Hive-QL which is similar to SQL. 
 
@@ -12,11 +12,11 @@ In this tutorial, we will explore the following:
 6.  PARTITIONED a Table
 7.  Bucketing a Table
 
-###Prerequisites
+### Prerequisites
 
 A working HDP cluster - the easiest way to have a HDP cluster is to download the [Hortonworks Sandbox] [1]
 
-###Step 1.   Let's load a data file into a Hive table.
+### Step 1.   Let's load a data file into a Hive table.
 First of all, download data file from here [click here][2] and name the file as TwitterData.txt . You can copy the downloaded file into hdfs folder, /user/hadoop using hdfs fs -put command (see this [tutorial](http://hortonworks.com/hadoop-tutorial/using-commandline-manage-files-hdfs/)) or the Hue Interface. 
 
 As the file is small, you can simply open it, copy and create a local file in the sandbox manually as well.
@@ -62,10 +62,10 @@ Here is the log that you can refer for exact steps.
 
 Please run select * from this table to see the data.
 
-###Step 2.   Let's create a table using RCfile format
+### Step 2.   Let's create a table using RCfile format
 Record Columnar(RC) format determines how to store relational tables on distributed computer clusters. With this format, you can get the advantages of a columnar format over row format of a record. 
 
-#####Here is a sample Create RC file format table syntax:
+##### Here is a sample Create RC file format table syntax:
 ```sql
     CREATE TABLE TwitterExampleRCtable(
         tweetId INT, username BIGINT,
@@ -85,7 +85,7 @@ Here are the logs of the exact steps.
 
 ![](http://hortonassets.s3.amazonaws.com/tutorial/hive/Hive_HW_step_2.jpg)
 
-###Step 3.  Let's query the table we just created.
+### Step 3.  Let's query the table we just created.
 Let's find top 10 countries who tweeted most using TwitterExampleRCtable.
 ```sql
 Select profileLocation, COUNT(txt) as count1 FROM TwitterExampleRCtable GROUP BY profileLocation ORDER BY count1 desc limit 10;
@@ -94,7 +94,7 @@ Please see the folloiwng log and the results:
 ![](http://hortonassets.s3.amazonaws.com/tutorial/hive/Hive_Hw_step_3.1.jpg)
 ![](http://hortonassets.s3.amazonaws.com/tutorial/hive/Hive_HW_step3.2.jpg)
 
-###Step 4. Let's look at Managed tables vs External tables
+### Step 4. Let's look at Managed tables vs External tables
 Managed tables are created by default with CREATE TABLE statements, whereas External tables are used when you want your tables to point to data file in place. 
 
 Here is the syntax for creating these tables.
@@ -134,7 +134,7 @@ describe formatted ManagedExample;
 describe formatted ExternalExample;
 ```
 
-###Step 5. Hive ORC File format.
+### Step 5. Hive ORC File format.
 
 Optimized Row Columnar (ORC) File format is used as it further compresses data files. It could result in a small performance loss in writing, but there will be huge performance gain in reading. 
 
@@ -152,7 +152,7 @@ Let's try it out. Please see that the table is stored as ORC.
     STORED AS ORC tblproperties ("orc.compress"="GLIB");
 ```
 
-###Step 6. Let's create a PARTITIONED Table and load data into.
+### Step 6. Let's create a PARTITIONED Table and load data into.
 Partitions are  horizontal slices of data which allow large sets of data to be segmented into more manageable blocks.
 Here is the sample syntax to create a partitioned table and load data into partitions.
 
@@ -169,7 +169,7 @@ Here is the log from creating a table with ORC file format and a Partitioned tab
 
 ![](http://hortonassets.s3.amazonaws.com/tutorial/hive/Hive_HW_step4.2.jpg
 )
-###Step 7. Let's create a table with Buckets.
+### Step 7. Let's create a table with Buckets.
 
 Bucketing is a technique that allows to cluster or segment large sets of data to optimize query performance.
 

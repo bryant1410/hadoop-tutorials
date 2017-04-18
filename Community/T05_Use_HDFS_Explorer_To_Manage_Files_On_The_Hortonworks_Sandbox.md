@@ -15,7 +15,7 @@ In this tutorial we will walk through how to connect HDFS Explorer to the Horton
 1.  Download and start [Hortonworks Sandbox 2.0](http://hortonworks.com/products/hortonworks-sandbox/#install)
 2.  Download and install [HDFS Explorer](http://bigdata.red-gate.com/hdfs-explorer.html)
 
-###Step one: Enable access to the Hortonworks Sandbox from your local machine.
+### Step one: Enable access to the Hortonworks Sandbox from your local machine.
 In order to access the Hortonworks Sandbox with HDFS Explorer you will need to create an entry in your hosts file. 
 
 To do this launch Notepad [with administrator privileges](http://windows.microsoft.com/en-gb/windows7/how-do-i-run-an-application-once-with-a-full-administrator-access-token).
@@ -38,7 +38,7 @@ Add the following code to the end of the hosts file:
 
 **Note: if you have configured your Sandbox to use a different IP address, then you'll need to change the IP address in the snippet above.**
 
-###Step Two: Connect to your Sandbox in HDFS Explorer.
+### Step Two: Connect to your Sandbox in HDFS Explorer.
 
 
 * Launch HDFS Explorer
@@ -55,7 +55,7 @@ Add the following code to the end of the hosts file:
 
 **Note: HDFS Explorer supports multiple connections. To create additional connections, simply click file > add connection again. **
 
-###Next Steps
+### Next Steps
 Once HDFS Explorer is connected to the Hortonworks Sandbox it can be used to rapidly upload files and data and download query results using the familiar Windows Explorer-like GUI.
 
 

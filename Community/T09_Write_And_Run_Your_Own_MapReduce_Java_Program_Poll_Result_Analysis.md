@@ -27,7 +27,7 @@ To follow the steps in this tutorial, your computer must have the following item
 ### Explanation of the Use Case
 A fictional use case is presented here, in order to enable you to easily understand the functionality and power of Hadoop MapReduce, without finding it overwhelming or boring.
 
-####General Elections in Utopia
+#### General Elections in Utopia
 In the democratic country of Utopia, the General Elections (Polls) for the position of President was conducted some days ago.  About five million Utopian Citizens participated in the elections with full enthusiasm and cast their votes to the candidate whom they think deserves the position.  Because of large population, the elections were conducted in 1000 polling booths, geographically separated, so that a citizen can vote from his nearest booth.
 
 There were five contestants for the post.  The names of the candidates are as follows:  
@@ -59,7 +59,7 @@ Jojo
 You have to announce the results by this evening, before 5 PM.  It is already 10 AM.  As it happens to be, you are a good Java Programmer. Now, roll up your sleeves and follow the instructions to count the votes and announce the results by 5 PM.
 
 ### Instructions
-####Eclipse Project Setup
+#### Eclipse Project Setup
 1. Create an Eclipse Java Project with name `UtopiaVoteCount`.
 2. Go to Project Properties window and in "Java Build Path" section, click on "Add External Jars"
 3. In the JAR Selection dialog, select the following jars from the extracted Hadoop tar.gz file.
@@ -70,7 +70,7 @@ You have to announce the results by this evening, before 5 PM.  It is already 10
 
 ![Eclipse Build Path Settings](images/tutorial-09/eclipse_build_path_settings.png "Eclipse Build Path Settings")
 
-####Code the Mapper Class
+#### Code the Mapper Class
 In the eclipse project created above, create a new Java Class file with name `VoteCountMapper` and write the following code in it.  This will be the Mapper Class.
 
 ```java
@@ -97,7 +97,7 @@ public class VoteCountMapper extends Mapper<Object, Text, Text, IntWritable> {
 }
 
 ```
-####Code the Reducer Class
+#### Code the Reducer Class
 In the eclipse project created above, create a new Java Class file with name `VoteCountReducer` and write the following code in it.  This will be the Reducer Class.
 
 ```java
@@ -123,7 +123,7 @@ public class VoteCountReducer extends Reducer<Text, IntWritable, Text, IntWritab
 }
 ```
 
-####Code the MapReduce Application/Driver Class
+#### Code the MapReduce Application/Driver Class
 In the eclipse project created above, create a new Java Class file with name `VoteCountApplication` and write the following code in it.  This will be the Application/Driver Class.
 
 ```java
@@ -178,7 +178,7 @@ public class VoteCountApplication extends Configured implements Tool{
 }
 ```
 
-####Setting Java Version - Compiler Options
+#### Setting Java Version - Compiler Options
 Hortonworks Sandbox VM contains Java version 6.  So, we need to compile our classes using Java Version 6 in order to avoid Version Mismatch runtime exception.  To ensure compilation using Java Version 6, follow the below instructions.
 
 1. Right-click on the Java Project `UtopiaVoteCount` and click on `Properties` menu option.
@@ -188,7 +188,7 @@ Hortonworks Sandbox VM contains Java version 6.  So, we need to compile our clas
 
 ![Eclipse Java Version Settings](images/tutorial-09/eclipse_java_version_settings.png "Eclipse Java Version Settings")
 
-####Creating a Java Archive (JAR) File
+#### Creating a Java Archive (JAR) File
 To test your application's error scenario, right-click on `VoteCountApplication` class and choose Run as -> Java Application.  This should print the following error message in the eclipse console.
 
 ```
@@ -202,7 +202,7 @@ Now, let us export the Java Project to a JAR file.
 3. In the Launch configuration, choose `UtopiaVoteCount` project.  Choose export destination as ~/Desktop/UtopiaVoteCount.jar. Here, ~ means the user's home directory. Choose "Extract required libraries into generated JAR" option and click on Finish.  Click OK for all the ensuing warning messages.  Ignore if any warnings are displayed after export.
 4. Using a file browser, check if UtopiaVoteCount.jar exists in ~/Desktop directory.
 
-####VirtualBox Shared Folder Settings
+#### VirtualBox Shared Folder Settings
 We are going to setup the directory ~/Desktop to be shared between our Host computer and the Hortonworks Sandbox.  We need this to transfer the UtopiaVoteCount.jar to the Hortonworks Sandbox.
 
 1. Before powering up the Hortonworks Sandbox, open the settings of Hortonworks Sandbox VM.
@@ -216,24 +216,24 @@ Now, you can access your ~/Desktop folder from within Hortonworks Sandbox.
 
 ![Virtualbox Shared Folder Settings](images/tutorial-09/shared_folder_settings.png "Virtualbox Shared Folder Settings")
 
-####Verify Shared Folder Access
+#### Verify Shared Folder Access
 Let us check if you can access the UtopiaVoteCount.jar file present in ~/Desktop folder, from within the Hortonworks Sandbox.
 
 Boot up your Hortonworks Sandbox VM.  In the Virtual machine's window, press `Alt+F5` and login as root/hadoop.
 
 To change to mounted directories, type `cd /media/` and press Enter.  Now, type `ls` and press Enter to bring up a list of shared folders.  This should show `sf_Desktop` as an entry.  This means that you can access ~/Desktop of your computer from within Hortonworks Sandbox VM.
 
-####Copy JAR to hue Home Directory
+#### Copy JAR to hue Home Directory
 We are going to run our MapReduce Job as `hue` user.  So, we need to copy the `UtopiaVoteCount.jar` to that user's home directory `/usr/lib/hue`, with permissions for `hue` to execute the same.
 
 In the command prompt, enter the command `cp /media/sf_Desktop/UtopiaVoteCount.jar /usr/lib/hue/` and press Enter.
 
 Now, enter the command `cd /usr/lib/hue/ ; chmod 777 UtopiaVoteCount.jar` and press Enter.  This will make the JAR file readable and executable by all.
 
-####Test Input Data Setup
+#### Test Input Data Setup
 For our MapReduce job to execute, we need test input data.  The test input data is nothing but a set of files, having multiple lines, one name in each line.  So, go to [File Browser](http://localhost:8000/filebrowser/) and create a directory `VoteCountInput` under `/user/hue` directory.  Inside the directory, create two files booth-1.txt and booth-2.txt with sample contents (Multiple lines, one name in each line).
 
-####Fire MapReduce Job Execution
+#### Fire MapReduce Job Execution
 We are going to run our MapReduce Job as `hue` user.  Let us now change to the user `hue` by typing `su - hue` command pressing enter.  Now, you are the user `hue`.
 
 Now, we can use `hadoop jar` command to fire the job. Run the following command :
@@ -244,19 +244,19 @@ hadoop jar UtopiaVoteCount.jar /user/hue/VoteCountInput /user/hue/VoteCountOutpu
 
 Seeing the way the program is written, the above command means that the input files lie in /user/hue/VoteCountInput directory and the output will be produced in /user/hue/VoteCountOutput directory in HDFS.
 
-####Monitor MapReduce Job Execution
+#### Monitor MapReduce Job Execution
 You can monitor the progress of the triggered job using [Job Browser](http://localhost:8000/jobbrowser/).  If you wish, you could take a peek into the generated log files.
 
 ![Job Progress](images/tutorial-09/job_progress.png "Job Progress")
 
 ![Job Completed](images/tutorial-09/job_completed.png "Job Completed")
 
-####View Vote Count Results
+#### View Vote Count Results
 The final, consolidated vote count for each candidate can be found in a file present in the directory `/user/hue/VoteCountOutput`.  View this file using [File Browser](http://localhost:8000/filebrowser/) to know the number of votes each candidate got.
 
 ![Job Results](images/tutorial-09/job_results.png "Job Results")
 
 Assuming that you spent approximately an hour, including the setup and running of MapReduce job, you could be ready with the election results by 11 AM.  Then what? Party until 5 PM :)
 
-####Next Steps
+#### Next Steps
 Tweak the code and see what other use cases you can solve using Hadoop MapReduce.

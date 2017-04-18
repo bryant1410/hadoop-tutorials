@@ -1,4 +1,4 @@
-##Hadoop Tutorials
+## Hadoop Tutorials
 
 This repo contains a set of tutorials for Hadoop designed to work inside or alongside the [Hortonworks Sandbox](http://hortonworks.com/products/hortonworks-sandbox/). Sandbox is a single-node Hadoop cluster that runs in a Virtual Machine (Virtual Box, VMWare, Hyper-V).
 
@@ -8,7 +8,7 @@ Please feel free to recommend edits to existing tutorials, and contribute your o
 
 Current tutorials are as follows:
 
-###Sandbox Tutorials (Embedded in Sandbox and tested with v2.0)
+### Sandbox Tutorials (Embedded in Sandbox and tested with v2.0)
 
 * [1 - Hello World - Using Sandbox with Hive and Pig](/Sandbox/T01_Hello_World_Using_Sandbox_with_Hive_and_Pig.md)
 * [2 - Data Processing with Pig - Processing Baseball Stats](/Sandbox/T02_Data_Processing_with_Pig.md)
@@ -25,7 +25,7 @@ Current tutorials are as follows:
 * [13 - Refining and Visualizing Sentiment Data](/Sandbox/T13_Refining_and_Visualizing_Sentiment_Data.md)
 * [14 - Analyzing Machine and Sensor Data](/Sandbox/T14_Analyzing_Machine_and_Sensor_Data.md)
 
-###Community Tutorials
+### Community Tutorials
 
 Feel free to contribute tutorials and help the community harness Hadoop!
 
